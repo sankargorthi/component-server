@@ -1,0 +1,15 @@
+{
+  "name": "component-server",
+  "version": "0.1.0",
+  "description": "A server to provide files that component/component can consume",
+  "main": "app.js",
+  "keywords": [
+    "component",
+    "server"
+  ],
+  "author": "sankargorthi",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "~3.4.0"
+  }
+}
