@@ -8,6 +8,9 @@ app.all('/components/:username/:component/:version/*', function(req, res, next) 
 
     if (params.length > 0) {
         var file = getRawFile(function(data) {
+            if (!data) {
+                res.send('File not found', 404);
+            }
             res.send(data);
 	}, params.username, params.component, params.version, params[0]); 
     }
