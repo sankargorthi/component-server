@@ -1,9 +1,9 @@
 var express = require('express');
 var app = express();
 var sys = require('sys');
-var exec = require('child_process').exec;
+var exec = require('execSync').exec;
 
-app.all('/components/:username/:component/:version/*', function(req, res, next) {
+app.get('/components/:username/:component/:version/*', function(req, res, next) {
     var params = req.params;
 
     if (params.length > 0) {
@@ -28,7 +28,7 @@ function getRawFile(callback, username, component, version, file) {
                    username,
                    component + '.git'
                 ].join('/');
-     exec('git --git-dir ' + path + ' show ' + version + ':' + file, function(error, stdout) {
-         callback(stdout);
-     });
+     var result = exec('git --git-dir ' + path + ' show ' + version + ':' + file);
+     callback(result.stdout);
 }
+
