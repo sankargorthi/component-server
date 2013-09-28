@@ -12,7 +12,7 @@ app.get('/components/:username/:component/:version/*', function(req, res, next) 
                 res.send('File not found', 404);
             }
             res.send(data);
-	}, params.username, params.component, params.version, params[0]); 
+        }, params.username, params.component, params.version, params[0]); 
     }
 });
 
@@ -28,7 +28,16 @@ function getRawFile(callback, username, component, version, file) {
                    username,
                    component + '.git'
                 ].join('/');
-     var result = exec('git --git-dir ' + path + ' show ' + version + ':' + file);
-     callback(result.stdout);
+     try {
+         var result = exec('git --git-dir ' + path + ' show ' + version + ':' + file);
+         if (!result.stderr && result.stdout.indexOf('Not a git repository') === -1) {
+             callback(result.stdout);
+         } else {
+             callback();
+         }
+     } catch (e) {
+         console.log(e);
+         callback();
+     }
 }
 
