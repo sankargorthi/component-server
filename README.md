@@ -23,3 +23,6 @@ Starts an express engine at port `3917`. The path to the repository folder is co
     }
 
 NOTE: Make sure the trailing slash on the IP address is always present.
+
+# License
+MIT
