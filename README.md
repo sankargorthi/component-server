@@ -4,9 +4,10 @@ A proxy to serve up components regardless of which git hosting tool is used. Poi
 ## Usage
     
     $ npm install
+    # edit config.json
     $ node app
 
-Starts an express engine at port `3917`. The path to the repository folder is constructed in `app.js`.
+Starts an express engine at the port specified as `port:` in `config.json`. The path to the repositories folder needs to be set to `repositories_path:`.
 
 ## Adding the remote to components
 
