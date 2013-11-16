@@ -1,6 +1,6 @@
 {
   "name": "component-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A server to provide files that component/component can consume",
   "main": "app.js",
   "keywords": [
