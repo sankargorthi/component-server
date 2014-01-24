@@ -10,7 +10,6 @@
   "author": "sankargorthi",
   "license": "MIT",
   "devDependencies": {
-    "express": "~3.4.0",
-    "execSync": "~1.0.1-pre"
+    "express": "~3.4.0"
   }
 }
