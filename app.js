@@ -8,7 +8,7 @@
 var express = require('express'),
     app = express(),
     sys = require('sys'),
-    exec = require('execSync').exec,
+    exec = require('child_process').exec,
     fs = require('fs'),
     path = require('path'),
     config = require('./config.json');
@@ -20,12 +20,9 @@ function getRawFile(callback, username, component, version, file) {
             username,
             component + '.git');
     try {
-        result = exec('git --git-dir ' + repo + ' show ' + version + ':' + file);
-        if (!result.stderr && result.stdout.indexOf('Not a git repository') === -1) {
-            callback(result.stdout);
-        } else {
-            callback();
-        }
+        exec('git --git-dir ' + repo + ' show ' + version + ':' + file,
+            {encoding: 'binary'},
+            callback);
     } catch (e) {
         console.log(e);
         callback();
@@ -36,17 +33,21 @@ app.get('/components/:username/:component/:version/*', function callback(req, re
     var params = req.params;
 
     if (params.length > 0) {
-        getRawFile(function responder(data) {
-            if (!data) {
+        getRawFile(function responder(error, stdout, stderr) {
+            if (error) {
+                console.log(stderr)
                 res.send('File not found', 404);
+            } else {
+                res.writeHead(200);
+                res.write(stdout, 'binary');
+                res.end();
             }
-            res.send(data);
         }, params.username, params.component, params.version, params[0]);
     }
 });
 
 app.get('/', function defResponse(req, res) {
-    res.send('Component server', req);
+    res.send('Component server', 200);
 });
 
 app.listen(config.port);
