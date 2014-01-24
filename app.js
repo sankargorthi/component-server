@@ -21,7 +21,7 @@ function getRawFile(callback, username, component, version, file) {
             component + '.git');
     try {
         exec('git --git-dir ' + repo + ' show ' + version + ':' + file,
-            {encoding: 'binary'},
+            {encoding: 'binary', maxBuffer: 5000 * 1024},
             callback);
     } catch (e) {
         console.log(e);
@@ -35,9 +35,11 @@ app.get('/components/:username/:component/:version/*', function callback(req, re
     if (params.length > 0) {
         getRawFile(function responder(error, stdout, stderr) {
             if (error) {
-                console.log(stderr)
+		console.log(error);
+                console.log(stderr);
                 res.send('File not found', 404);
             } else {
+		res.setHeader('Content-Type', 'text/plain');
                 res.writeHead(200);
                 res.write(stdout, 'binary');
                 res.end();
